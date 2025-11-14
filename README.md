@@ -18,7 +18,7 @@ Reference this image in your `.devcontainer/devcontainer.json`:
 {
   "name": "OBDb Development",
   "image": "ghcr.io/obdb/devcontainer:latest",
-  "postStartCommand": "/usr/local/bin/install-obdb-skill.sh",
+  "postAttachCommand": "/usr/local/bin/setup-obdb-dev.sh",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -33,7 +33,19 @@ Reference this image in your `.devcontainer/devcontainer.json`:
 }
 ```
 
-The `postStartCommand` automatically downloads and installs the latest obdb-editor skill every time the container starts, ensuring you always have the most up-to-date tooling.
+The `postAttachCommand` runs `/usr/local/bin/setup-obdb-dev.sh` which:
+- Downloads and installs the latest obdb-editor skill
+- Updates or clones the OBDb schemas repository to `tests/schemas`
+
+This ensures you always have the most up-to-date tooling and test schemas.
+
+### Individual Scripts
+
+You can also run individual setup scripts manually if needed:
+
+- `/usr/local/bin/install-obdb-skill.sh` - Update obdb-editor skill only
+- `/usr/local/bin/update-schemas.sh` - Update test schemas only
+- `/usr/local/bin/setup-obdb-dev.sh` - Run full setup (recommended)
 
 ## Building Locally
 
