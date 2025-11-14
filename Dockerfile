@@ -18,6 +18,10 @@ RUN pip install --no-cache-dir pytest pyyaml pytest-xdist
 # Install Claude Code globally
 RUN npm install -g @anthropic-ai/claude-code
 
+# Copy skill installation script
+COPY install-obdb-skill.sh /usr/local/bin/install-obdb-skill.sh
+RUN chmod +x /usr/local/bin/install-obdb-skill.sh
+
 # Create vscode user for compatibility
 RUN useradd -m -s /bin/bash vscode
 USER vscode
