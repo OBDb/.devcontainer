@@ -23,9 +23,12 @@ if curl -fsSL "$SKILL_URL" -o "$TEMP_ZIP"; then
         rm -rf "$SKILL_DIR"
     fi
 
+    # Create the skill directory
+    mkdir -p "$SKILL_DIR"
+
     # Extract the new skill
     echo "Extracting skill to $SKILL_DIR..."
-    unzip -o -q "$TEMP_ZIP" -d ".claude/skills"
+    unzip -o -q "$TEMP_ZIP" -d "$SKILL_DIR"
 
     # Clean up
     rm "$TEMP_ZIP"
