@@ -1,9 +1,14 @@
-FROM mcr.microsoft.com/devcontainers/python:3
+# Use slim base image instead of full devcontainer
+FROM python:3.13-slim
 
-# Install Node.js 18
+# Install minimal system dependencies
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
+    && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    git \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -12,7 +17,8 @@ RUN pip install --no-cache-dir pytest pyyaml pytest-xdist
 # Install Claude Code globally
 RUN npm install -g @anthropic-ai/claude-code
 
-# Set up the vscode user as the default
+# Create vscode user for compatibility
+RUN useradd -m -s /bin/bash vscode
 USER vscode
 
 LABEL org.opencontainers.image.source="https://github.com/OBDb/.devcontainer"
