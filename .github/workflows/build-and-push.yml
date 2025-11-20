@@ -8,6 +8,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    # Run daily at 2:00 AM UTC to get latest Claude Code installation
+    - cron: '0 2 * * *'
 
 env:
   REGISTRY: ghcr.io
