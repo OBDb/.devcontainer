@@ -23,7 +23,12 @@ COPY install-obdb-skill.sh /usr/local/bin/install-obdb-skill.sh
 COPY update-schemas.sh /usr/local/bin/update-schemas.sh
 COPY setup-obdb-dev.sh /usr/local/bin/setup-obdb-dev.sh
 COPY register-obdb-mcp.sh /usr/local/bin/register-obdb-mcp.sh
-RUN chmod +x /usr/local/bin/install-obdb-skill.sh /usr/local/bin/update-schemas.sh /usr/local/bin/setup-obdb-dev.sh /usr/local/bin/register-obdb-mcp.sh
+COPY copy-templates.sh /usr/local/bin/copy-templates.sh
+RUN chmod +x /usr/local/bin/install-obdb-skill.sh /usr/local/bin/update-schemas.sh /usr/local/bin/setup-obdb-dev.sh /usr/local/bin/register-obdb-mcp.sh /usr/local/bin/copy-templates.sh
+
+# Copy template directory
+RUN apt-get update && apt-get install -y --no-install-recommends rsync && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+COPY template /usr/local/share/obdb-devcontainer/template
 
 # Clone and build vscode-obdb MCP server
 WORKDIR /tmp
