@@ -4,7 +4,7 @@
 set -e
 
 WORKSPACE_ROOT="${1:-$(pwd)}"
-MCP_SERVER_PATH="/usr/local/lib/obdb-mcp/mcp/server.js"
+MCP_SERVER_PATH="/usr/local/lib/obdb-mcp/dist/mcp/server.js"
 
 echo "Registering OBDb MCP server for workspace: $WORKSPACE_ROOT"
 

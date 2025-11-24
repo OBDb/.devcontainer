@@ -32,7 +32,7 @@ RUN git clone https://github.com/OBDb/vscode-obdb.git \
     && npm install \
     && npm run compile:mcp \
     && mkdir -p /usr/local/lib/obdb-mcp \
-    && cp -r dist/mcp /usr/local/lib/obdb-mcp/ \
+    && cp -r dist /usr/local/lib/obdb-mcp/ \
     && cp package.json /usr/local/lib/obdb-mcp/ \
     && cd /usr/local/lib/obdb-mcp \
     && npm install --production \
