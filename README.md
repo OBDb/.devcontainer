@@ -35,16 +35,24 @@ Reference this image in your `.devcontainer/devcontainer.json`:
 ```
 
 The `postAttachCommand` runs `/usr/local/bin/setup-obdb-dev.sh` which:
+- Copies template files (including `.claude/settings.local.json`) to the workspace
 - Downloads and installs the latest obdb-editor skill
 - Updates or clones the OBDb schemas repository to `tests/schemas`
 - Registers the OBDb MCP server with Claude Code for signalset querying
 
-This ensures you always have the most up-to-date tooling, test schemas, and Claude Code integration.
+This ensures you always have the most up-to-date tooling, test schemas, Claude Code settings, and MCP integration.
+
+**Note:** Template files are copied only if they don't already exist in the workspace. Add these to your `.gitignore` if you don't want them committed:
+```
+.claude/settings.local.json
+tests/update_yaml_tests.py
+```
 
 ### Individual Scripts
 
 You can also run individual setup scripts manually if needed:
 
+- `/usr/local/bin/copy-templates.sh` - Copy template files only
 - `/usr/local/bin/install-obdb-skill.sh` - Update obdb-editor skill only
 - `/usr/local/bin/update-schemas.sh` - Update test schemas only
 - `/usr/local/bin/register-obdb-mcp.sh` - Register OBDb MCP server only

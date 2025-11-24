@@ -6,6 +6,15 @@ set -e
 echo "=== Setting up OBDb development environment ==="
 echo ""
 
+# Copy template files to workspace
+if [ -x "/usr/local/bin/copy-templates.sh" ]; then
+    /usr/local/bin/copy-templates.sh
+else
+    echo "Warning: copy-templates.sh not found, skipping template copy"
+fi
+
+echo ""
+
 # Install/update obdb-editor skill
 if [ -x "/usr/local/bin/install-obdb-skill.sh" ]; then
     /usr/local/bin/install-obdb-skill.sh
