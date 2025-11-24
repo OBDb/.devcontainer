@@ -23,4 +23,13 @@ else
 fi
 
 echo ""
+
+# Register OBDb MCP server with Claude Code
+if [ -x "/usr/local/bin/register-obdb-mcp.sh" ]; then
+    /usr/local/bin/register-obdb-mcp.sh
+else
+    echo "Warning: register-obdb-mcp.sh not found, skipping MCP registration"
+fi
+
+echo ""
 echo "=== OBDb development environment ready! ==="
