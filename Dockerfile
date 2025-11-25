@@ -12,8 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-RUN pip3 install --no-cache-dir --break-system-packages pytest pyyaml pytest-xdist
+# Clone schemas repo and install Python dependencies from its requirements.txt
+RUN git clone --depth=1 https://github.com/OBDb/.schemas.git /tmp/schemas \
+    && pip3 install --no-cache-dir --break-system-packages -r /tmp/schemas/requirements.txt \
+    && rm -rf /tmp/schemas
 
 # Install Claude Code globally (unavoidable, but at least no build tools)
 RUN npm install -g @anthropic-ai/claude-code && npm cache clean --force
