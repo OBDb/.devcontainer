@@ -1,22 +1,32 @@
-# Use slim base image instead of full devcontainer
-FROM python:3.13-slim
+# Start with minimal node image which already has Node.js
+FROM node:22-slim
 
-# Install minimal system dependencies
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get install -y --no-install-recommends \
-    curl \
-    ca-certificates \
+# Install minimal runtime dependencies (python + git for cloning)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
     git \
-    unzip \
-    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs \
+    ca-certificates \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-RUN pip install --no-cache-dir pytest pyyaml pytest-xdist
+RUN pip3 install --no-cache-dir --break-system-packages pytest pyyaml pytest-xdist
 
-# Install Claude Code globally
-RUN npm install -g @anthropic-ai/claude-code
+# Install Claude Code globally (unavoidable, but at least no build tools)
+RUN npm install -g @anthropic-ai/claude-code && npm cache clean --force
+
+# Clone vscode-obdb and install only runtime deps (skip canvas build by using --ignore-scripts)
+RUN git clone https://github.com/OBDb/vscode-obdb.git /tmp/vscode-obdb \
+    && cd /tmp/vscode-obdb \
+    && npm install --ignore-scripts \
+    && npm run compile:mcp \
+    && mkdir -p /usr/local/lib/obdb-mcp \
+    && cp -r dist /usr/local/lib/obdb-mcp/ \
+    && cp package.json /usr/local/lib/obdb-mcp/ \
+    && cd /usr/local/lib/obdb-mcp \
+    && npm install --omit=dev --ignore-scripts \
+    && npm cache clean --force \
+    && rm -rf /tmp/vscode-obdb
 
 # Copy setup scripts
 COPY install-obdb-skill.sh /usr/local/bin/install-obdb-skill.sh
@@ -28,22 +38,7 @@ COPY format-test-results.sh /usr/local/bin/format-test-results.sh
 RUN chmod +x /usr/local/bin/install-obdb-skill.sh /usr/local/bin/update-schemas.sh /usr/local/bin/setup-obdb-dev.sh /usr/local/bin/register-obdb-mcp.sh /usr/local/bin/copy-templates.sh /usr/local/bin/format-test-results.sh
 
 # Copy template directory
-RUN apt-get update && apt-get install -y --no-install-recommends rsync && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 COPY template /usr/local/share/obdb-devcontainer/template
-
-# Clone and build vscode-obdb MCP server
-WORKDIR /tmp
-RUN git clone https://github.com/OBDb/vscode-obdb.git \
-    && cd vscode-obdb \
-    && npm install \
-    && npm run compile:mcp \
-    && mkdir -p /usr/local/lib/obdb-mcp \
-    && cp -r dist /usr/local/lib/obdb-mcp/ \
-    && cp package.json /usr/local/lib/obdb-mcp/ \
-    && cd /usr/local/lib/obdb-mcp \
-    && npm install --production \
-    && cd /tmp \
-    && rm -rf vscode-obdb
 
 # Create vscode user for compatibility
 RUN useradd -m -s /bin/bash vscode
