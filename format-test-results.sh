@@ -3,12 +3,17 @@
 
 set -e
 
-TEST_OUTPUT_FILE="${1:-test-output.txt}"
-TEST_EXIT_CODE="${2:-1}"
-GITHUB_SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
-GITHUB_REPOSITORY="${GITHUB_REPOSITORY:-unknown/repo}"
-GITHUB_SHA="${GITHUB_SHA:-main}"
-GITHUB_RUN_ID="${GITHUB_RUN_ID:-0}"
+TEST_OUTPUT_FILE="${1}"
+TEST_EXIT_CODE="${2}"
+GITHUB_SERVER_URL="${3}"
+GITHUB_REPOSITORY="${4}"
+GITHUB_SHA="${5}"
+GITHUB_RUN_ID="${6}"
+
+if [ -z "$TEST_OUTPUT_FILE" ] || [ -z "$TEST_EXIT_CODE" ] || [ -z "$GITHUB_SERVER_URL" ] || [ -z "$GITHUB_REPOSITORY" ] || [ -z "$GITHUB_SHA" ] || [ -z "$GITHUB_RUN_ID" ]; then
+  echo "Usage: $0 <test_output_file> <test_exit_code> <github_server_url> <github_repository> <github_sha> <github_run_id>" >&2
+  exit 1
+fi
 
 if [ ! -f "$TEST_OUTPUT_FILE" ]; then
   echo "Error: Test output file not found: $TEST_OUTPUT_FILE" >&2
