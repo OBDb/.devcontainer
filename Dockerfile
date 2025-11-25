@@ -1,13 +1,14 @@
 # Start with minimal node image which already has Node.js
 FROM node:22-slim
 
-# Install minimal runtime dependencies (python + git for cloning + rsync for template copying + curl for skills)
+# Install minimal runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
     git \
     rsync \
     curl \
+    unzip \
     ca-certificates \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
