@@ -1,9 +1,10 @@
 #!/bin/bash
-# Script to format pytest test failures into markdown for PR comments
+# Script to format pytest test results into markdown for PR comments
 
 set -e
 
 TEST_OUTPUT_FILE="${1:-test-output.txt}"
+TEST_EXIT_CODE="${2:-1}"
 GITHUB_SERVER_URL="${GITHUB_SERVER_URL:-https://github.com}"
 GITHUB_REPOSITORY="${GITHUB_REPOSITORY:-unknown/repo}"
 GITHUB_SHA="${GITHUB_SHA:-main}"
@@ -14,7 +15,17 @@ if [ ! -f "$TEST_OUTPUT_FILE" ]; then
   exit 1
 fi
 
-# Extract assertion errors
+# Check if tests passed
+if [ "$TEST_EXIT_CODE" -eq 0 ]; then
+  echo '## ✅ Response Tests Passed'
+  echo ''
+  echo 'All test cases are passing successfully.'
+  echo ''
+  echo "[View full test output](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})"
+  exit 0
+fi
+
+# Tests failed - extract assertion errors
 FAILURES=$(grep "AssertionError: Signal" "$TEST_OUTPUT_FILE" || echo "")
 
 echo '## ❌ Response Tests Failed'
