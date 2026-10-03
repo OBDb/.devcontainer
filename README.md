@@ -24,8 +24,7 @@ Reference this image in your `.devcontainer/devcontainer.json`:
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "ClutchEngineering.obdb-tooling",
-        "anthropic.claude-code"
+        "ClutchEngineering.obdb-tooling"
       ]
     }
   },
@@ -34,15 +33,14 @@ Reference this image in your `.devcontainer/devcontainer.json`:
 ```
 
 The `postAttachCommand` runs `/usr/local/bin/setup-obdb-dev.sh` which:
-- Copies template files (including `.claude/settings.local.json`) to the workspace
+- Copies template files to the workspace
 - Updates or clones the OBDb schemas repository to `tests/schemas`
 - Registers the OBDb MCP server with Claude Code for signalset querying
 
-This ensures you always have the most up-to-date tooling, test schemas, Claude Code settings, and MCP integration.
+This ensures you always have the most up-to-date tooling, test schemas, and MCP integration.
 
 **Note:** Template files are copied only if they don't already exist in the workspace. Add these to your `.gitignore` if you don't want them committed:
 ```
-.claude/settings.local.json
 tests/update_yaml_tests.py
 ```
 
