@@ -4,7 +4,6 @@
       "Bash(cat:*)",
       "Bash(comm -23:*)",
       "Bash(jq:*)",
-      "Skill(obdb-editor)",
       "Bash(python3:*)",
       "Bash(find:*)",
       "mcp__obdb-signalsets__list_signalsets",
