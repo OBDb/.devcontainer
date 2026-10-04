@@ -15,15 +15,6 @@ fi
 
 echo ""
 
-# Install/update obdb-editor skill
-if [ -x "/usr/local/bin/install-obdb-skill.sh" ]; then
-    /usr/local/bin/install-obdb-skill.sh
-else
-    echo "Warning: install-obdb-skill.sh not found, skipping skill installation"
-fi
-
-echo ""
-
 # Update schemas
 if [ -x "/usr/local/bin/update-schemas.sh" ]; then
     /usr/local/bin/update-schemas.sh

@@ -34,13 +34,12 @@ RUN git clone https://github.com/OBDb/vscode-obdb.git /tmp/vscode-obdb \
     && rm -rf /tmp/vscode-obdb
 
 # Copy setup scripts
-COPY install-obdb-skill.sh /usr/local/bin/install-obdb-skill.sh
 COPY update-schemas.sh /usr/local/bin/update-schemas.sh
 COPY setup-obdb-dev.sh /usr/local/bin/setup-obdb-dev.sh
 COPY register-obdb-mcp.sh /usr/local/bin/register-obdb-mcp.sh
 COPY copy-templates.sh /usr/local/bin/copy-templates.sh
 COPY format-test-results.sh /usr/local/bin/format-test-results.sh
-RUN chmod +x /usr/local/bin/install-obdb-skill.sh /usr/local/bin/update-schemas.sh /usr/local/bin/setup-obdb-dev.sh /usr/local/bin/register-obdb-mcp.sh /usr/local/bin/copy-templates.sh /usr/local/bin/format-test-results.sh
+RUN chmod +x /usr/local/bin/update-schemas.sh /usr/local/bin/setup-obdb-dev.sh /usr/local/bin/register-obdb-mcp.sh /usr/local/bin/copy-templates.sh /usr/local/bin/format-test-results.sh
 
 # Copy template directory
 COPY template /usr/local/share/obdb-devcontainer/template
